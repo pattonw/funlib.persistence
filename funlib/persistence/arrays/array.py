@@ -311,6 +311,9 @@ class Array(Freezable):
 
                 self._source_data[region_slices] = value
 
+            # Re-wrap the numpy array with dask to ensure synchronization
+            self.data = da.from_array(self._source_data, chunks=self.data.chunksize)
+
         else:
             raise RuntimeError(
                 "This array is not writeable since you have applied a custom callable "
