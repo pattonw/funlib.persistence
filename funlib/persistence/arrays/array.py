@@ -312,7 +312,7 @@ class Array(Freezable):
                 self._source_data[region_slices] = value
 
             # Re-wrap the numpy array with dask to ensure synchronization
-            self.data = da.from_array(self._source_data, chunks=self.data.chunksize)
+            self.data = da.from_array(self._source_data)
 
         else:
             raise RuntimeError(
