@@ -311,8 +311,12 @@ class Array(Freezable):
 
                 self._source_data[region_slices] = value
 
-            # Re-wrap the numpy array with dask to ensure synchronization
-            self.data = da.from_array(self._source_data)
+            # If the source data is an in-memory numpy array, writing to the numpy
+            # array does not always result in the dask array reading the new data.
+            # It seems to be a caching issue. To work around this, we create a new
+            # dask array from the source data.
+            if isinstance(self._source_data, np.ndarray):
+                self.data = da.from_array(self._source_data)
 
         else:
             raise RuntimeError(
