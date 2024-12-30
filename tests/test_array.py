@@ -81,6 +81,7 @@ def test_setitem():
     assert a[Coordinate((1, 0))] == data[1, 0] == 5
     assert a[Coordinate((1, 1))] == data[1, 1] == 6
     assert a[Coordinate((1, 4))] == data[1, 4] == 9
+    assert a[Coordinate((1, 4))] == data[1, 4] == 9
 
     # set entirely with numpy array and channels
 
