@@ -1,5 +1,6 @@
 import dask.array as da
 import numpy as np
+import zarr
 import pytest
 
 from funlib.geometry import Coordinate, Roi
@@ -68,12 +69,14 @@ def test_getitem():
     np.testing.assert_array_equal(b, [[6, 7, 8, 9]])
 
 
-def test_setitem():
+def test_setitem(tmp_path):
+    source_zarr = zarr.open(tmp_path/"test.zarr", mode="w")
+    data = source_zarr.create("data", data=np.zeros((2, 5)), shape=(2, 5))
+
     # set entirely with numpy array
+    a = Array(data)
 
-    a = Array(np.zeros((2, 5)), (0, 0), (1, 1))
-
-    data = np.arange(0, 10, dtype=np.float32).reshape(2, 5)
+    data = np.arange(0, 10, dtype=a.dtype).reshape(2, 5)
     a[Roi((0, 0), (2, 5))] = data
     assert a[Coordinate((0, 0))] == data[0, 0]
     assert a[Coordinate((0, 1))] == data[0, 1]
