@@ -73,7 +73,7 @@ def test_setitem():
 
     a = Array(np.zeros((2, 5)), (0, 0), (1, 1))
 
-    data = np.arange(0, 10).reshape(2, 5)
+    data = np.arange(0, 10, dtype=np.float32).reshape(2, 5)
     a[Roi((0, 0), (2, 5))] = data
     assert a[Coordinate((0, 0))] == data[0, 0]
     assert a[Coordinate((0, 1))] == data[0, 1]
